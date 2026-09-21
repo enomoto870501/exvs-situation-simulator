@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EXVS シチュエーションシミュレータ</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="title-area">
+      <h1>EXVS シチュエーションシミュレータ</h1>
+      <div class="control-panel">
+        <button id="initial-button">初期表示</button>
+        <button id="generate-button">シチュエーションをランダム生成</button>
+      </div>
+    </div>
+
+    <div class="app-container">
+      
+      <div class="status-column">
+        <div id="team-status-output"></div>
+        <div id="situation-output"></div>
+      </div>
+
+      <div class="map-column">
+        <section class="map-section">
+          <div class="map-control-panel">
+            <span class="panel-title">矢印表示:</span>
+            <label class="toggle-label ally-toggle">
+              <input type="checkbox" class="arrow-toggle-checkbox" data-target-arrow="self" checked />
+              自機
+            </label>
+            <label class="toggle-label ally-toggle">
+              <input type="checkbox" class="arrow-toggle-checkbox" data-target-arrow="partner" checked />
+              僚機
+            </label>
+            <label class="toggle-label enemy-toggle">
+              <input type="checkbox" class="arrow-toggle-checkbox" data-target-arrow="enemy1" checked />
+              敵1
+            </label>
+            <label class="toggle-label enemy-toggle">
+              <input type="checkbox" class="arrow-toggle-checkbox" data-target-arrow="enemy2" checked />
+              敵2
+            </label>
+          </div>
+
+          <div class="map-wrapper">
+            <div id="map-container" class="map-container">
+              <img src="side7map.png" alt="サイド7マップ" class="map-bg-image" />
+              
+              <svg id="map-arrow-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
+                <defs>
+                  <marker id="arrow-ally" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" />
+                  </marker>
+                  <marker id="arrow-enemy" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" />
+                  </marker>
+                </defs>
+                <g stroke="#ffffff" stroke-width="8" stroke-linecap="round">
+                  <line id="arrow-line-self-bg" x1="0" y1="0" x2="0" y2="0" />
+                  <line id="arrow-line-partner-bg" x1="0" y1="0" x2="0" y2="0" />
+                  <line id="arrow-line-enemy1-bg" x1="0" y1="0" x2="0" y2="0" />
+                  <line id="arrow-line-enemy2-bg" x1="0" y1="0" x2="0" y2="0" />
+                </g>
+                <g stroke-width="4" stroke-linecap="round">
+                  <line id="arrow-line-self" x1="0" y1="0" x2="0" y2="0" stroke="#2563eb" marker-end="url(#arrow-ally)" />
+                  <line id="arrow-line-partner" x1="0" y1="0" x2="0" y2="0" stroke="#0369a1" marker-end="url(#arrow-ally)" />
+                  <line id="arrow-line-enemy1" x1="0" y1="0" x2="0" y2="0" stroke="#dc2626" marker-end="url(#arrow-enemy)" />
+                  <line id="arrow-line-enemy2" x1="0" y1="0" x2="0" y2="0" stroke="#ea580c" marker-end="url(#arrow-enemy)" />
+                </g>
+              </svg>
+              
+              <div class="map-pin" data-player-key="self" style="top: 30%; left: 30%;">自機</div>
+              <div class="map-pin" data-player-key="partner" style="top: 30%; left: 45%;">僚機</div>
+              <div class="map-pin" data-player-key="enemy1" style="top: 70%; left: 65%;">敵1</div>
+              <div class="map-pin" data-player-key="enemy2" style="top: 70%; left: 80%;">敵2</div>
+              <div class="arrow-target" data-target-key="self"></div>
+              <div class="arrow-target" data-target-key="partner"></div>
+              <div class="arrow-target" data-target-key="enemy1"></div>
+              <div class="arrow-target" data-target-key="enemy2"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+    <template id="cost-row-template">
+      <div class="exvs-cost-row">
+        <div class="exvs-cost-label"></div>
+        <div class="exvs-cost-bar"></div>
+        <div class="exvs-cost-value"></div>
+      </div>
+    </template>
+
+    <template id="player-card-template">
+      <section class="card">
+        <div class="card-control-grid">
+          <label>
+            <div class="adjust-control-row ms-name">
+              <span>機体</span>
+              <select class="unit-card-select"></select>
+            </div>
+          </label>
+          <label>
+            <div class="adjust-control-row">
+              <span>被撃墜回数</span>
+              <input type="number" class="adjust-input" data-field="deaths" min="0" max="3" step="1" />
+              <button type="button" class="adjust-button" data-field="deaths" data-direction="-1">−</button>
+              <button type="button" class="adjust-button" data-field="deaths" data-direction="1">＋</button>
+            </div>
+          </label>
+          <label>
+            <div class="adjust-control-row">
+              <span>与ダメージ</span>
+              <input type="number" class="adjust-input" data-field="dealtDamage" min="0" max="2000" step="10" />
+              <button type="button" class="adjust-button" data-field="dealtDamage" data-direction="-1">−</button>
+              <button type="button" class="adjust-button" data-field="dealtDamage" data-direction="1">＋</button>
+            </div>
+          </label>
+        </div>
+        <div class="hp-inline-row">
+          <div>
+            <span class="hp-inline-label">耐久</span>
+            <span class="hp-inline-value"></span>
+          </div>
+          <div class="hp-bar hp-inline-bar"><div class="hp-bar-fill"></div></div>
+          <button type="button" class="adjust-button" data-field="hp" data-direction="-1">−</button>
+          <button type="button" class="adjust-button" data-field="hp" data-direction="1">＋</button>
+        </div>
+        <div class="burst-inline-row">
+          <div>
+            <span class="burst-inline-label">覚醒</span>
+            <span class="burst-inline-value"></span>
+          </div>
+          <div class="burst-bar burst-inline-bar"><div class="burst-bar-fill"></div></div>
+          <button type="button" class="adjust-button" data-field="burstGauge" data-direction="-1">−</button>
+          <button type="button" class="adjust-button" data-field="burstGauge" data-direction="1">＋</button>
+        </div>
+        <div class="over-limit-row">
+          <p>オーバーリミット</p>
+          <label>
+            <select class="over-limit-select">
+              <option value="available">発動可能</option>
+              <option value="ended">終了</option>
+              <option value="unused">未使用</option>
+            </select>
+          </label>
+        </div>
+      </section>
+    </template>
+
+    <script type="module" src="./src/situation.ts"></script>
+  </body>
+</html>

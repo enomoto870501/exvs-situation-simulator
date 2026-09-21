@@ -1,0 +1,735 @@
+/* ==========================================================================
+   既存スタイル：ベース設定
+   ========================================================================== */
+   body {
+    margin: 0;
+    padding: 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  h1 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 24px;
+  }
+  
+  button {
+    padding: 10px 16px;
+    margin-bottom: 24px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #1d4ed8;
+  }
+  
+  #situation-output {
+    display: grid;
+    gap: 16px;
+  }
+  
+  section {
+    padding: 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  section h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+  }
+  
+  section p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+/* ==========================================================================
+   既存スタイルの修正・最適化（ヘッダーとパネルの一体化）
+   ========================================================================== */
+   .title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+  
+  .title-area h1 {
+    margin: 0;
+  }
+  
+  .control-panel {
+    display: flex;
+    gap: 12px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  
+  /* ==========================================================================
+     新規追加：左右2カラム分割レイアウト（グリッドシステム）
+     ========================================================================== */
+  .app-container {
+    display: grid;
+    grid-template-columns: 1fr; /* デフォルト（スマホ）は1列縦並び */
+    gap: 24px;
+    align-items: start;
+  }
+  
+  /* パソコンやタブレットなど、十分な横幅がある場合のみ左右2列に分割 */
+  @media (min-width: 1200px) {
+    .app-container {
+      grid-template-columns: 1.3fr 1fr; /* 左側（カード群）をやや広めに、右側（マップ）をすっきり配置 */
+    }
+  }
+  
+  .status-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .map-column {
+    position: sticky;
+    top: 16px; /* スクロールした時にマップが画面上部にピッタリついてくる快適仕様 */
+  }
+  
+  /* マップ外枠のカードデザイン化 */
+  .map-section {
+    margin-top: 0; /* カラム化に伴い不要なマージンをリセット */
+    padding: 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .map-section h2 {
+    display: none; /* スクリーンショットのデザインに合わせ、無駄な見出しをスタイリッシュに非表示化 */
+  }
+  
+  /* 矢印操作パネルの横幅をマップと完全同期 */
+  .map-control-panel {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .control-panel {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .control-panel button,
+  .random-button {
+    margin-bottom: 0;
+  }
+  
+  /* ==========================================================================
+     既存スタイル：カード・見出しデザイン
+     ========================================================================== */
+  .card {
+    padding: 6px;
+    border-left: 6px solid transparent;
+  }
+  
+  .team-card {
+    margin-bottom: 1rem;
+    border-left-color: #6b7280;
+  }
+  
+  .ally-card {
+    border-left-color: #2563eb;
+  }
+  
+  .enemy-card {
+    border-left-color: #dc2626;
+  }
+  
+  .error-card {
+    border-left-color: #f97316;
+    background: #fff7ed;
+  }
+  
+  .error-card h2 {
+    color: #c2410c;
+  }
+  
+  .error-card p {
+    color: #7c2d12;
+    font-weight: 600;
+  }
+  
+  .team-heading {
+    margin: 8px 0 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 18px;
+  }
+  
+  .ally-heading {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  
+  .enemy-heading {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  
+  .situation-comment {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fef3c7;
+    color: #92400e;
+    font-weight: 600;
+  }
+  
+  /* ==========================================================================
+     既存スタイル：コストエリア（EXVS仕様）
+     ========================================================================== */
+  .exvs-cost-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0 16px 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: #111827;
+  }
+  
+  .exvs-cost-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 64px;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .exvs-cost-label {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: right;
+  }
+  
+  .exvs-cost-bar {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0;
+    height: 16px;
+    padding: 3px;
+    border: 2px solid #000000;
+    background: #374151;
+    transform: skewX(-20deg);
+  }
+  
+  .cost-segment {
+    display: block;
+    background: #1f2937;
+    border-right: 2px solid transparent;
+  }
+  
+  .cost-segment:nth-child(2n) {
+    border-right-color: #111827;
+  }
+  
+  .cost-segment:last-child {
+    border-right: none;
+  }
+  
+  .ally-cost .cost-segment.is-active {
+    background: #22d3ee;
+  }
+  
+  .enemy-cost .cost-segment.is-active {
+    background: #ef4444;
+  }
+  
+  .exvs-cost-value {
+    padding: 5px 8px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  .ally-cost .exvs-cost-value {
+    background: #2563eb;
+  }
+  
+  .enemy-cost .exvs-cost-value {
+    background: #dc2626;
+  }
+  
+  /* ==========================================================================
+     既存スタイル：カード内フォーム・調整UI
+     ========================================================================== */
+  .card-control-grid {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+  }
+  
+  .card-control-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .card-control-grid input,
+  .card-control-grid select {
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 24px;
+    padding: 2px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 12px;
+    background: #ffffff;
+  }
+  
+  .ms-name .unit-card-select {
+    padding-left: 0;
+  }
+  
+  .adjust-control-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr 44px 44px;
+    gap: 4px;
+    align-items: center;
+  }
+  
+  .adjust-control-row.ms-name {
+    grid-template-columns: 6rem 1fr;
+  }
+  
+  .adjust-control-row input {
+    width: 100%;
+    min-width: 0;
+  }
+  
+  .adjust-button {
+    width: 44px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: #374151;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+  }
+  
+  .adjust-button:hover {
+    background: #111827;
+  }
+  
+  /* ==========================================================================
+     既存スタイル：インラインゲージ（HP・覚醒・リミット）
+     ========================================================================== */
+  .hp-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  
+  .hp-row p {
+    white-space: nowrap;
+  }
+  
+  .hp-bar {
+    width: 100%;
+    height: 14px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e5e7eb;
+  }
+  
+  .hp-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+  }
+  
+  .hp-bar-fill-green {
+    background: #22c55e;
+  }
+  
+  .hp-bar-fill-yellow {
+    background: #eab308;
+  }
+  
+  .hp-bar-fill-red {
+    background: #ef4444;
+  }
+  
+  .burst-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .burst-row p {
+    width: 6rem;
+    white-space: nowrap;
+  }
+  
+  .burst-bar {
+    width: 100%;
+    height: 14px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e5e7eb;
+  }
+  
+  .burst-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+  }
+  
+  .burst-bar-fill-none {
+    background: #9ca3af;
+  }
+  
+  .burst-bar-fill-half {
+    background: #22d3ee;
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.8);
+  }
+  
+  .burst-bar-fill-full {
+    background: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.9);
+  }
+  
+  .over-limit-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .over-limit-row label {
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  
+  .over-limit-row select {
+    height: 24px;
+    box-sizing: border-box;
+    padding: 2px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #ffffff;
+  }
+  
+  .hp-inline-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr 44px 44px;
+    align-items: center;
+    gap: 4px;
+    margin: 2px 0;
+  }
+  
+  .hp-inline-label {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .hp-inline-value {
+    width: 66px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .hp-inline-bar {
+    margin: 0;
+    min-width: 0;
+  }
+  
+  .hp-inline-row .adjust-button {
+    margin: 0;
+  }
+  
+  .burst-inline-row {
+    display: grid;
+    grid-template-columns: 6rem 1fr 44px 44px;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .burst-inline-label {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .burst-inline-value {
+    min-width: 48px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .burst-inline-bar {
+    margin: 0;
+    min-width: 0;
+  }
+  
+  .burst-inline-row .adjust-button {
+    margin: 0;
+  }
+  
+  /* ==========================================================================
+     新規追加：サイド7 マップ＆ドラッグピン用スタイル
+     ========================================================================== */
+  .map-section {
+    padding: 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .map-section h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  
+  /* マップ外枠（アスペクト比を維持しつつ最大500px幅） */
+  .map-wrapper {
+    margin: 0 auto;
+  }
+  
+  /* ドラッグの基準点になるエリア */
+  .map-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 正方形を維持 */
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none; /* スマホブラウザのスクロール・ピンチを無効化してドラッグをスムーズに */
+  }
+  
+  /* 背景マップ画像 */
+  .map-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; /* ドラッグ操作を邪魔させない */
+  }
+  
+  /* 汎用ピンの共通スタイル（○の形状） */
+  .map-pin {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 40px; /* 文字を中央寄せ（境界線分を加味） */
+    border: 2px solid #ffffff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    cursor: grab;
+    transform: translate(-50%, -50%); /* 中心点を座標の基準にする */
+    z-index: 10;
+    transition: transform 0.05s ease-out;
+  }
+  
+  /* ドラッグ中のポインタ状態 */
+  .map-pin:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.15); /* つまんでいる時に少し大きくして見やすく */
+    z-index: 100;
+  }
+  
+  /* 各プレイヤー固有のピンカラー（EXVSなどの勢力色をイメージ） */
+  .map-pin[data-player-key="self"] {
+    background: rgba(37, 99, 235, 0.9); /* 青：自機 */
+  }
+  
+  .map-pin[data-player-key="partner"] {
+    background: rgba(3, 105, 161, 0.9); /* 水色/紺：僚機 */
+  }
+  
+  .map-pin[data-player-key="enemy1"] {
+    background: rgba(220, 38, 38, 0.9); /* 赤：敵1 */
+  }
+  
+  .map-pin[data-player-key="enemy2"] {
+    background: rgba(234, 88, 12, 0.9); /* 橙：敵2 */
+  }
+  
+  /* ==========================================================================
+     既存スタイル：レスポンシブメディアクエリ
+     ========================================================================== */
+  @media (min-width: 768px) {
+    #situation-output {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .card-control-grid label:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .hp-inline-row {
+      grid-template-columns: 6rem 1fr 44px 44px;
+      grid-template-areas:
+        "label value minus plus"
+        "bar bar bar bar";
+    }
+  
+    .hp-inline-label {
+      grid-area: label;
+    }
+  
+    .hp-inline-value {
+      grid-area: value;
+    }
+  
+    .hp-inline-bar {
+      grid-area: bar;
+    }
+  
+    .hp-inline-row .adjust-button:nth-of-type(1) {
+      grid-area: minus;
+    }
+  
+    .hp-inline-row .adjust-button:nth-of-type(2) {
+      grid-area: plus;
+    }
+  
+    .burst-inline-row {
+      grid-template-columns: 6rem 1fr 44px 44px;
+      grid-template-areas:
+        "label value minus plus"
+        "bar bar bar bar";
+    }
+  
+    .burst-inline-label {
+      grid-area: label;
+    }
+  
+    .burst-inline-value {
+      grid-area: value;
+    }
+  
+    .burst-inline-bar {
+      grid-area: bar;
+    }
+  
+    .burst-inline-row .adjust-button:nth-of-type(1) {
+      grid-area: minus;
+    }
+  
+    .burst-inline-row .adjust-button:nth-of-type(2) {
+      grid-area: plus;
+    }
+  }
+  /* ==========================================================================
+   新規追加：矢印操作用ターゲット（つまみ）
+   ========================================================================== */
+   .arrow-target {
+    position: absolute;
+    width: 28px;        /* 掴みやすさをアップさせるために少しだけ判定を大きくしました */
+    height: 28px;
+    border-radius: 50%;
+    background: transparent; /* 背景を完全に透明化 */
+    border: none;            /* 枠線も消去 */
+    cursor: move;            /* カーソルを移動用に変更（rotate-layerから一般的な十字/移動用に） */
+    transform: translate(-50%, -50%);
+    z-index: 15;
+    display: block;
+  }
+  
+  /* ホバー時の効果（白丸の強調）も不要になったため、この「:hover」のブロックは丸ごと削除するか、以下のように中身を空（または削除）にしてください */
+  .arrow-target:hover {
+    background: transparent;
+    box-shadow: none;
+  }
+  /* ==========================================================================
+   新規追加：矢印のON/OFF操作パネルのスタイル
+   ========================================================================== */
+.map-control-panel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .map-control-panel .panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #4b5563;
+  }
+  
+  .map-control-panel .toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  /* チェックボックスの色分け（文字色の同期） */
+  .map-control-panel .ally-toggle {
+    color: #1e40af; /* 青系：味方 */
+  }
+  
+  .map-control-panel .enemy-toggle {
+    color: #991b1b; /* 赤系：敵 */
+  }
+  
+  .map-control-panel input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+  }
+  .over-limit-active {
+    border: 3px solid rgb(198, 207, 29); /* 白い枠線 */
+    border-radius: 50%; /* 丸いアイコンに対応 */
+    box-sizing: border-box; /* 枠線がアイコンのサイズに影響しないようにする */
+  }
+  
