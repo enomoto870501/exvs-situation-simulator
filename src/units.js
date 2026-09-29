@@ -53,6 +53,7 @@ export const units = [
     { name: "ガンダムダブルオースカイ", cost: 3000, maxHp: 680 },
     { name: "エクストリームガンダム type-レオスII Vs.", cost: 3000, maxHp: 680 },
     { name: "N-EXTREMEガンダム エクスプロージョン", cost: 3000, maxHp: 720 },
+    { name: "ブラックナイトスコード カルラ", cost: 3000, maxHp: 680 },
     // 2500コスト
     { name: "ジオング", cost: 2500, maxHp: 620 },
     { name: "Zガンダム", cost: 2500, maxHp: 660 },
@@ -139,6 +140,9 @@ export const units = [
     { name: "エクストリームガンダム アイオス-F", cost: 2500, maxHp: 660 },
     { name: "エクストリームガンダム エクセリア", cost: 2500, maxHp: 660 },
     { name: "N-EXTREMEガンダム ヴィシャス", cost: 2500, maxHp: 640 },
+    { name: "∫エクストリームガンダム", cost: 2500, maxHp: 640 },
+    { name: "ガンダムアシュタロン・ハーミットクラブ", cost: 2500, maxHp: 660 },
+    { name: "リ・ガズィ(アムロ搭乗)", cost: 2500, maxHp: 640 },
     // 2000コスト
     { name: "ガンダム", cost: 2000, maxHp: 660 },
     { name: "ガンダム(Gメカ)", cost: 2000, maxHp: 640 },
@@ -175,6 +179,7 @@ export const units = [
     { name: "ドラゴンガンダム", cost: 2000, maxHp: 680 },
     { name: "ガンダムマックスター", cost: 2000, maxHp: 680 },
     { name: "ノーベルガンダム", cost: 2000, maxHp: 650 },
+    { name: "ガンダムローズ", cost: 2000, maxHp: 680 },
     { name: "ウイングガンダム", cost: 2000, maxHp: 640 },
     { name: "ガンダムデスサイズヘル", cost: 2000, maxHp: 640 },
     { name: "ガンダムヘビーアームズ改", cost: 2000, maxHp: 620 },
